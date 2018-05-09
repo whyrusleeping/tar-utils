@@ -11,6 +11,6 @@
   "license": "MIT",
   "name": "tar-utils",
   "releaseCmd": "git commit -a -m \"gx publish $VERSION\"",
-  "version": "0.0.3"
+  "version": "0.1.0"
 }
 
