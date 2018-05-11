@@ -94,6 +94,11 @@ func (te *Extractor) Sanitize(toggle bool) {
 			if err := platformLink(inLink); err != nil {
 				return err
 			}
+			if _, err := os.Lstat(inLink.Name); err == nil {
+				if err := os.Remove(inLink.Name); err != nil {
+					return err
+				}
+			}
 			return os.Symlink(inLink.Target, inLink.Name)
 		}
 	} else {
@@ -139,6 +144,12 @@ func (te *Extractor) extractSymlink(h *tar.Header) error {
 
 	if te.LinkFunc != nil {
 		return te.LinkFunc(Link{Root: te.Path, Name: h.Name, Target: h.Linkname})
+	}
+
+	if _, err = os.Lstat(path); err == nil {
+		if err := os.Remove(path); err != nil {
+			return err
+		}
 	}
 
 	return os.Symlink(h.Linkname, path)
